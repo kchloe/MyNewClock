@@ -1,5 +1,8 @@
 package minheekang.lge.com.mynewclock;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,10 +13,14 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     WebView webView;
+    String PREF_KEY_HOME="home_url";
+    String defaultHome="https://m.search.naver.com/search.naver?sm=mtb_hty.top&where=m&query=%EC%84%9C%EC%9A%B8+%EB%82%A0%EC%94%A8";
+    SharedPreferences mPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        mPref = PreferenceManager.getDefaultSharedPreferences(this);
+
         webView = (WebView) findViewById(R.id.webview);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -29,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         webView.setWebChromeClient(new WebBrowserClient());
         webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl("https://m.search.naver.com/search.naver?sm=mtb_hty.top&where=m&query=%EC%84%9C%EC%9A%B8+%EB%82%A0%EC%94%A8");
+        webView.loadUrl(getHomeUrl());
 
     }
 
@@ -43,7 +52,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_home:
-                webView.loadUrl("https://m.search.naver.com/search.naver?sm=mtb_hty.top&where=m&query=%EC%84%9C%EC%9A%B8+%EB%82%A0%EC%94%A8");
+                webView.loadUrl(getHomeUrl());
+                break;
+            case R.id.menu_set:
+                settingHome();
                 break;
             default:
                 break;
@@ -56,6 +68,23 @@ public class MainActivity extends AppCompatActivity {
             result.confirm();
             return true;
         }
+    }
+
+    public void settingHome() {
+        if (getHomeUrl().equals(webView.getUrl())) {
+            Toast.makeText(this, "There is no change.", Toast.LENGTH_SHORT).show();
+        } else {
+            SharedPreferences.Editor editor = mPref.edit();
+            editor.putString(PREF_KEY_HOME, webView.getUrl());
+            editor.commit();
+
+            Toast.makeText(this, "Home is changed!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private String getHomeUrl() {
+        return mPref.getString(PREF_KEY_HOME, defaultHome);
     }
 
 }
