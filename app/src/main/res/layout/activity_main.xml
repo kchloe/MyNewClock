@@ -1,18 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="minheekang.lge.com.mynewclock.MainActivity">
+    tools:context="minheekang.lge.com.mynewclock.MainActivity"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <TextClock
+        android:id="@+id/date"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:format12Hour="yyyy. M. d. E"
+        android:gravity="center_horizontal"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format12Hour="aa"
+            android:textSize="20sp"
+            android:layout_marginEnd="15dp"/>
+        <TextClock
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format12Hour="h:mm"
+            android:textSize="80sp"/>
+    </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <WebView
+        android:id="@+id/webview"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></WebView>
+
+
+</LinearLayout>
